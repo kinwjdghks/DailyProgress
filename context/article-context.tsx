@@ -8,7 +8,8 @@ export type Article = {
 type ctx_article ={
     articles: Article[],
     addArticle: (id: string)=>void,
-    removeArticle: (id: string)=>void
+    removeArticle: (id: string)=>void,
+    updateTime: (id:string, time:number)=>void
 }
 
 const dummyArticleList: Article[] = [
@@ -50,8 +51,20 @@ export const ArticleProvider = ({ children }: { children: any }) => {
     setArticleState(newState);
   };
 
+  const updateTime = (id: string, time: number): void =>{
+    const targetIdx = articleState.findIndex((item)=>item.id == id);
+    if(targetIdx == -1) return;
+    const newState = [...articleState];
+    newState[targetIdx].elapsedTime += time;
+    setArticleState(newState);      
+  }
+
   return (
-    <articleContext.Provider value={{articles: articleState, addArticle: addArticle, removeArticle: removeArticle}}>
+    <articleContext.Provider value={{
+      articles: articleState,
+      addArticle: addArticle,
+      removeArticle: removeArticle, 
+      updateTime:updateTime}}>
       {children}
     </articleContext.Provider>
   );
