@@ -1,22 +1,23 @@
 import { useRouter } from "next/router";
+import ArticleFrame from "./articleFrame";
+import { Article as TYPE_Article } from "@/context/article-context";
 
-const Article = ({id, elapsedtime}: {id: string, elapsedtime: number})=>{
-   
-   let elapsedHr= Math.floor(elapsedtime/60);
-   let elapsedMin = elapsedtime%60;
-   
-   const router = useRouter();
-   const moveToDetailedPage = (articleId: string): void =>{
-   router.push({pathname: "/article/[articleId]", query: {articleId: id}});
-  }
-    return (
-    <div className="w-[30%] h-80 relative bg-slate-600 rounded-3xl cursor-pointer hover:scale-[104%] transition-all" onClick={()=>moveToDetailedPage(id)}>
-        <div className="w-11/12 h-4/6 relative rounded-2xl overflow-auto bg-white m-auto mt-[5%]">
-            <h1 className="text-center text-2xl mt-[10%]">{elapsedHr} Hour {elapsedMin} Min</h1>
-        </div>
-        <h2 className="m-5 text-right text-3xl text-white">{id}</h2>
+const Article = ({item}:{item: TYPE_Article}) => {
+  let elapsedHr = Math.floor(item.elapsedTime/ 60);
+  let elapsedMin = item.elapsedTime % 60;
 
-    </div>)
-}
+  const router = useRouter();
+  const moveToDetailedPage = (): void => {
+    router.push({ pathname: "/article/[articleId]", query: { articleId: item.id } });
+  };
+  return (
+    <ArticleFrame onClick={moveToDetailedPage} color={item.color}>
+      <h1 className="text-center text-2xl mt-[10%]">
+        {elapsedHr} Hour {elapsedMin} Min
+      </h1>
+      <h2 className="m-5 text-right text-3xl text-white">{item.id}</h2>
+    </ArticleFrame>
+  );
+};
 
 export default Article;

@@ -1,75 +1,105 @@
-import { createContext, useState, useContext } from "react";
+import LocalStorage from "@/functions/localstorage";
+import { COLOR } from "@/public/assets/colors";
+import { createContext, useState, useContext, useEffect } from "react";
 
 export type Article = {
   id: string;
   elapsedTime: number;
+  color: COLOR;
+  key: number;
 };
 
-type ctx_article ={
-    articles: Article[],
-    addArticle: (id: string)=>void,
-    removeArticle: (id: string)=>void,
-    updateTime: (id:string, time:number)=>void
-}
+type ctx_article = {
+  articles: Article[];
+  addArticle: (id: string) => void;
+  removeArticle: (id: string) => void;
+  updateTime: (item: Article, time: number) => void;
+};
 
-const dummyArticleList: Article[] = [
+const dummyList:Article[] = [
   {
-    id: "article1",
-    elapsedTime: 130,
+    id: 'article1',
+    elapsedTime: 90,
+    color: COLOR.blue,
+    key:0
   },
   {
-    id: "article2",
-    elapsedTime: 40,
-  },
-  {
-    id: "article3",
-    elapsedTime: 75,
-  },
-  {
-    id: "article4",
-    elapsedTime: 190,
-  },
-];
+    id: 'article2',
+    elapsedTime: 135,
+    color: COLOR.red,
+    key:1
+  }
+]
 
 
 export const articleContext = createContext<ctx_article | undefined>(undefined);
 
 export const ArticleProvider = ({ children }: { children: any }) => {
-  const [articleState, setArticleState] = useState<Article[]>(dummyArticleList);
+  // LocalStorage.emptyStorage();
+
+  const [articleState, setArticleState] = useState<Article[]>([]);
+  const [articleKey,setArticleKey] = useState<number>(0);
 
   const addArticle = (id: string): void => {
-
-    const newArticle: Article = { id: id, elapsedTime: 0 };
+    const color: COLOR = Math.floor(Math.random()*6) as COLOR;
+    
+    const newArticle: Article = { id: id, elapsedTime: 0, color: color, key:articleKey };
     const newState: Article[] = [...articleState, newArticle];
     setArticleState(newState);
+    setArticleKey((prev)=>++prev);
+
+    LocalStorage.addArticleLS(newArticle);
+    LocalStorage.setLocalKeyLS(articleKey+1);
   };
 
-  const removeArticle = (id: string): void => {
-    const newState: Article[] = articleState.filter((item)=>{
-      if(item.id != id) return true
+  const removeArticle = (id:string): void => {
+    const newState: Article[] = articleState.filter((item_) => {
+      if (item_.id != id) return true;
     });
+    LocalStorage.removeArticleLS(id);
     setArticleState(newState);
   };
 
-  const updateTime = (id: string, time: number): void =>{
-    const targetIdx = articleState.findIndex((item)=>item.id == id);
-    if(targetIdx == -1) return;
+  const updateTime = (item: Article, time: number): void => {
+    const targetIdx = articleState.findIndex((item_) => item_.id == item.id);
+    if (targetIdx == -1) return;
     const newState = [...articleState];
     newState[targetIdx].elapsedTime += time;
-    setArticleState(newState);      
-  }
+    LocalStorage.updateArticleLS(item,time);
+    setArticleState(newState);
+  };
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (!localStorage.getItem("key")) {
+        //If it is first login, add dummy articles
+        localStorage.setItem("key", "0");
+        setArticleState(dummyList);
+        setArticleKey(2);
+        LocalStorage.addArticleLS(dummyList[0]);
+        LocalStorage.addArticleLS(dummyList[1]);
+      } else {
+        setArticleState(LocalStorage.getUserArticles()); //재방문이라면 유저의 정보를 가져와서 보여준다.
+        const currentKey = LocalStorage.getLocalKeyLS();
+        setArticleKey(currentKey!);
+        }
+    }
+  }, []);
 
   return (
-    <articleContext.Provider value={{
-      articles: articleState,
-      addArticle: addArticle,
-      removeArticle: removeArticle, 
-      updateTime:updateTime}}>
+    <articleContext.Provider
+      value={{
+        articles: articleState,
+        addArticle: addArticle,
+        removeArticle: removeArticle,
+        updateTime: updateTime,
+      }}
+    >
       {children}
     </articleContext.Provider>
   );
 };
- 
+
 export function useArticle() {
   const context = useContext(articleContext);
 
