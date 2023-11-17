@@ -19,13 +19,13 @@ type ctx_article = {
 const dummyList:Article[] = [
   {
     id: 'article1',
-    elapsedTime: 90,
+    elapsedTime: 1000000,
     color: COLOR.blue,
     key:0
   },
   {
     id: 'article2',
-    elapsedTime: 135,
+    elapsedTime: 40000,
     color: COLOR.red,
     key:1
   }

@@ -8,7 +8,7 @@ export default function Home() {
   const articles = ctx_article.articles;
 
   return (
-    <div className="w-screen h-full bg-red-100">
+    <div className="w-screen h-min bg-red-100">
       <ArticleDisplay items={articles} />
     </div>
   );

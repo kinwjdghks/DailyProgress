@@ -3,8 +3,8 @@ import ArticleFrame from "./articleFrame";
 import { Article as TYPE_Article } from "@/context/article-context";
 
 const Article = ({item}:{item: TYPE_Article}) => {
-  let elapsedHr = Math.floor(item.elapsedTime/ 60);
-  let elapsedMin = item.elapsedTime % 60;
+  let elapsedHr = Math.floor(item.elapsedTime/ 3600);
+  let elapsedMin = (Math.floor((item.elapsedTime / 60)%60)+'').padStart(2,'0');
 
   const router = useRouter();
   const moveToDetailedPage = (): void => {

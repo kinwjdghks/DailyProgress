@@ -4,6 +4,7 @@ import add_circle from "public/assets/images/add_circle.svg";
 import Image from "next/image";
 import ArticleFrame from "./articleFrame";
 import Button from "./ui/Button";
+import { COLOR } from "@/public/assets/colors";
 
 const BlankArticle = () => {
   const ctx_article = useContext(articleContext);
@@ -44,7 +45,7 @@ const BlankArticle = () => {
   return (
     <ArticleFrame
       onMouseLeave={() => setIsAdding(false)}
-      color="#EBB842"
+      color={COLOR.grey}
     >
       <div className="w-full h-full p-8 flex justify-center align-middle">
         {!isAdding && (
@@ -67,6 +68,7 @@ const BlankArticle = () => {
                 ref={inputIdref}
                 className={`w-3/4 h-12 text-3xl border-solid border-2 ${inputDisplay[inputError].border} ${inputDisplay[inputError].bordercolor}`}
                 onClick={() => setInputError("noerror")}
+                onChange={() => setInputError("noerror")}
               ></input>
               <Button onClick={addArticleHandler} size="S">Add</Button>
               
