@@ -1,7 +1,8 @@
 import { Article, articleContext } from "@/context/article-context";
 import { useRouter } from "next/router";
 import { useState, useContext, useEffect } from "react";
-import StopWatch, { toHourMin } from "@/components/stopwatch";
+import StopWatch from "@/components/stopwatch";
+import { toHourMin } from "@/components/ui/numberpanel";
 import Button from "@/components/ui/Button";
 import { Poppins } from "next/font/google";
 const poppins = Poppins({ weight: "500", subsets: ["latin"] });
@@ -30,7 +31,7 @@ const ArticlePage = () => {
   const updateElapsedTime = (time: number, auto:'auto'|'non_auto'): void => {
     //save time every 1 min under the hood
     let increment = 60;
-    if(auto == 'non_auto') increment = time
+    if(auto == 'non_auto') increment = time%60;
     if (!ctx_article) console.log("ctx not found in updateElapsedTime");
     else {
       ctx_article.updateTime(article!, increment);

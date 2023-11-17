@@ -1,6 +1,6 @@
 type btnsize = "S" | "M" | "L";
 type btnprops = {
-    onClick: any;
+    onClick: ()=>void;
     children: any;
     size: btnsize;
     active?: 'active' | 'inactive' | undefined;

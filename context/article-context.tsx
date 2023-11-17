@@ -18,14 +18,14 @@ type ctx_article = {
 
 const dummyList:Article[] = [
   {
-    id: 'article1',
-    elapsedTime: 1000000,
+    id: '과목1',
+    elapsedTime: 4200,
     color: COLOR.blue,
     key:0
   },
   {
-    id: 'article2',
-    elapsedTime: 40000,
+    id: '과목2',
+    elapsedTime: 3000,
     color: COLOR.red,
     key:1
   }
@@ -103,7 +103,7 @@ export const ArticleProvider = ({ children }: { children: any }) => {
         articles: articleState,
         addArticle: addArticle,
         removeArticle: removeArticle,
-        updateTime: updateTime,
+        updateTime: updateTime
       }}
     >
       {children}

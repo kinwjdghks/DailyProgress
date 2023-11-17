@@ -1,8 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import Button from "./ui/Button";
-import { Squada_One } from "next/font/google";
 import NumberPanel from "./ui/numberpanel";
-const squada = Squada_One({ weight: "400", subsets: ["latin"] });
 
 export type Time = {
   hour: number;
@@ -10,13 +8,7 @@ export type Time = {
   second: number;
 };
 
-export const toHourMin = (time: number): Time => {
-  return {
-    hour: Math.floor(time / 3600),
-    min: Math.floor((time / 60) % 60),
-    second: time % 60,
-  };
-};
+
 
 type stopwatchprops = {
   onSave: (time: number) => void; //update visual time wheh stop btn is hit
@@ -32,7 +24,7 @@ const StopWatch = ({ onSave, onAutoSave }: stopwatchprops) => {
     if (isRunning) return;
     setIsRunning(true);
     timerRef.current = setInterval(() => {
-      setTime((prev) => prev+10);
+      setTime((prev) => prev+1);
     }, 1000);
   };
   // console.log(time);
@@ -43,7 +35,7 @@ const StopWatch = ({ onSave, onAutoSave }: stopwatchprops) => {
   };
 
   useEffect(() => { //useEffect for autosave
-    console.log(time%60);
+    // console.log(time%60);
     if (time && time % 60 == 0){
       onAutoSave(time%60,'auto');
       console.log('autosaved!');
@@ -60,11 +52,7 @@ const StopWatch = ({ onSave, onAutoSave }: stopwatchprops) => {
 
   return (
     <div className="w-full">
-      <p className={`text-center text-[17vw] ${squada.className}`}>
-        <NumberPanel>{(toHourMin(time).hour + "").padStart(2, "0")}</NumberPanel>{` : `}
-        <NumberPanel>{(toHourMin(time).min + "").padStart(2, "0")}</NumberPanel>{` : `}
-        <NumberPanel>{(toHourMin(time).second + "").padStart(2, "0")}</NumberPanel>
-      </p>
+      <NumberPanel time={time}/>
       <div>
         <Button size="M" onClick={startTimer} active={`${!isRunning ? 'inactive':'active'}`}>
           Start

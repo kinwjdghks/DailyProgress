@@ -50,7 +50,7 @@ class LocalStorage {
 
   static removeArticleLS = (id: string): void => {
     if (typeof window !== "undefined") {
-      localStorage.removeItem(id);
+      localStorage.removeItem('article_'+id);
     } else console.log("cannot find localStorage from removeArticleLS");
   };
 
@@ -73,6 +73,7 @@ class LocalStorage {
   };
 
   static emptyStorage = ():void =>{
+    console.log('emptyStorage');
     if (typeof window !== "undefined") {
       const len = localStorage.length;
       console.log("length: "+len);
@@ -82,7 +83,9 @@ class LocalStorage {
           localStorage.removeItem(key!);
         }
       }
+      location.reload();
     }
+    else console.log("cannot find localStorage from emptyStorage");
   }
 
 }

@@ -1,17 +1,25 @@
+import { Squada_One } from "next/font/google";
+import { Time } from "../stopwatch";
+const squada = Squada_One({ weight: "400", subsets: ["latin"] });
 
-type panelprops = {
-    children: any,
-    width?:string,
-    height?:string,
+export const toHourMin = (time: number): Time => {
+    return {
+      hour: Math.floor(time / 3600),
+      min: Math.floor((time / 60) % 60),
+      second: time % 60,
+    };
+  };
 
-}
 
+const NumberPanel = ({time}:{time:number}) =>{
 
-const NumberPanel = (props:panelprops) =>{
-    const width = 'w-['+props.width+']';
-
-    return <div className={`inline-block w-[18rem] h-${props.height} 
-    `}>{props.children}</div>
+    return<div className={`text-center text-[17vw] h-min ${squada.className}`}>
+    <div className='inline-block w-[18rem] text-left align-middle'>{(toHourMin(time).hour + "").padStart(2, "0")}</div>
+    <div className="inline-block w-[8rem]">{time%2 ? '' : ':'}</div>
+    <div className='inline-block w-[18rem] text-left align-middle'>{(toHourMin(time).min + "").padStart(2, "0")}</div>
+    <div className="inline-block w-[8rem]">{time%2 ? '' : ':'}</div>
+    <div className='inline-block w-[18rem] text-left align-middle'>{(toHourMin(time).second + "").padStart(2, "0")}</div>
+  </div>
 }
 
 export default NumberPanel;
