@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import Button from "./ui/Button";
 import { Squada_One } from "next/font/google";
+import NumberPanel from "./ui/numberpanel";
 const squada = Squada_One({ weight: "400", subsets: ["latin"] });
 
 export type Time = {
@@ -18,8 +19,8 @@ export const toHourMin = (time: number): Time => {
 };
 
 type stopwatchprops = {
-  onSave: (time: number) => void;
-  onAutoSave: (time: number) => void;
+  onSave: (time: number) => void; //update visual time wheh stop btn is hit
+  onAutoSave: (time: number, auto:'auto'|'non_auto') => void; //update elapesedTime every 1 min
 };
 
 const StopWatch = ({ onSave, onAutoSave }: stopwatchprops) => {
@@ -31,32 +32,44 @@ const StopWatch = ({ onSave, onAutoSave }: stopwatchprops) => {
     if (isRunning) return;
     setIsRunning(true);
     timerRef.current = setInterval(() => {
-      setTime((prev) => prev + 20);
+      setTime((prev) => prev+10);
     }, 1000);
   };
+  // console.log(time);
   const stopTimer = () => {
     if (!isRunning) return;
     clearInterval(timerRef.current);
     setIsRunning(false);
-    onSave(time);
-    setTime(0);
   };
-  useEffect(() => {
-    if (time % 60 == 0) onAutoSave(time);
+
+  useEffect(() => { //useEffect for autosave
+    console.log(time%60);
+    if (time && time % 60 == 0){
+      onAutoSave(time%60,'auto');
+      console.log('autosaved!');
+    }
   }, [time]);
+
+  useEffect(()=>{ //useEffect for visual time
+    if(!isRunning && time){
+      // console.log(time);
+      onSave(time); //add time to visual time
+      setTime(0);
+    }
+  },[isRunning]);
 
   return (
     <div className="w-full">
       <p className={`text-center text-[17vw] ${squada.className}`}>
-        {(toHourMin(time).hour + "").padStart(2, "0")} :
-        {(toHourMin(time).min + "").padStart(2, "0")} :
-        {(toHourMin(time).second + "").padStart(2, "0")}
+        <NumberPanel>{(toHourMin(time).hour + "").padStart(2, "0")}</NumberPanel>{` : `}
+        <NumberPanel>{(toHourMin(time).min + "").padStart(2, "0")}</NumberPanel>{` : `}
+        <NumberPanel>{(toHourMin(time).second + "").padStart(2, "0")}</NumberPanel>
       </p>
       <div>
-        <Button size="M" onClick={startTimer}>
+        <Button size="M" onClick={startTimer} active={`${!isRunning ? 'inactive':'active'}`}>
           Start
         </Button>
-        <Button size="M" onClick={stopTimer}>
+        <Button size="M" onClick={stopTimer} active={`${isRunning ? 'inactive':'active'}`}>
           Stop
         </Button>
       </div>

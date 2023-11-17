@@ -1,6 +1,6 @@
 import LocalStorage from "@/functions/localstorage";
 import { COLOR } from "@/public/assets/colors";
-import { createContext, useState, useContext, useEffect } from "react";
+import { createContext, useState, useContext, useEffect, useRef } from "react";
 
 export type Article = {
   id: string;
@@ -36,6 +36,7 @@ export const articleContext = createContext<ctx_article | undefined>(undefined);
 
 export const ArticleProvider = ({ children }: { children: any }) => {
   // LocalStorage.emptyStorage();
+  const windowRef = useRef<Storage|null>(null);
 
   const [articleState, setArticleState] = useState<Article[]>([]);
   const [articleKey,setArticleKey] = useState<number>(0);
@@ -60,17 +61,20 @@ export const ArticleProvider = ({ children }: { children: any }) => {
     setArticleState(newState);
   };
 
-  const updateTime = (item: Article, time: number): void => {
+  const updateTime = (item: Article, time: number): void => { //update both State and Local storage
+    console.log('time: '+time);
     const targetIdx = articleState.findIndex((item_) => item_.id == item.id);
     if (targetIdx == -1) return;
     const newState = [...articleState];
+    console.log("updateTime: "+time+'+'+newState[targetIdx].elapsedTime +'='+ (time+newState[targetIdx].elapsedTime));
     newState[targetIdx].elapsedTime += time;
+
     LocalStorage.updateArticleLS(item,time);
     setArticleState(newState);
   };
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (window) {
       if (!localStorage.getItem("key")) {
         //If it is first login, add dummy articles
         localStorage.setItem("key", "0");
@@ -78,13 +82,20 @@ export const ArticleProvider = ({ children }: { children: any }) => {
         setArticleKey(2);
         LocalStorage.addArticleLS(dummyList[0]);
         LocalStorage.addArticleLS(dummyList[1]);
+        console.log('list initialized');
       } else {
         setArticleState(LocalStorage.getUserArticles()); //재방문이라면 유저의 정보를 가져와서 보여준다.
         const currentKey = LocalStorage.getLocalKeyLS();
         setArticleKey(currentKey!);
         }
     }
-  }, []);
+    else console.log("windowRef not found");
+  }, [windowRef]);
+
+  useEffect(()=>{
+    if(window) windowRef.current = window.localStorage;
+    else console.log('cannot find window obj');
+  },[]);
 
   return (
     <articleContext.Provider

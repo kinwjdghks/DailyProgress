@@ -2,7 +2,7 @@ import { articleContext } from "@/context/article-context";
 import { useState, useRef, useContext } from "react";
 import add_circle from "public/assets/images/add_circle.svg";
 import Image from "next/image";
-import ArticleFrame from "./articleFrame";
+import ArticleFrame from "./ui/articleFrame";
 import Button from "./ui/Button";
 import { COLOR } from "@/public/assets/colors";
 
@@ -50,11 +50,12 @@ const BlankArticle = () => {
       <div className="w-full h-full p-8 flex justify-center align-middle">
         {!isAdding && (
           <Image
-            className=""
             src={add_circle}
             width={150}
+            priority = {false}
             alt="add"
             onClick={toggleIsAdding}
+            draggable={false}
           />
         )}
         {isAdding && (

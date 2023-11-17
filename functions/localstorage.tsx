@@ -18,13 +18,27 @@ class LocalStorage {
     else return 0;
   }
 
-  static updateArticleLS = (item:Article, time: number): void => {
-    if (typeof window !== "undefined" && localStorage.getItem(item.id)) {
-    const key = JSON.parse(localStorage.getItem(item.id)!).key;
-    const article = { id: item.id, elapsedTime: time, key: key };
-    const article_json = JSON.stringify(article);
-    localStorage.setItem('article_'+item.id, article_json);
-    } else console.log("cannot find localStorage from updateArticleLS");
+  static updateArticleLS = (item:Article, time: number): void => { //replace elapsed time
+    // if (typeof window !== "undefined" && localStorage.getItem(item.id)) {
+    // const key = JSON.parse(localStorage.getItem(item.id)!).key;
+    // const article = { id: item.id, elapsedTime: time, key: key };
+    // console.log('updateArticleLS:  time = '+time);
+    // const article_json = JSON.stringify(article);
+    // localStorage.setItem('article_'+item.id, article_json);
+    // } else console.log("cannot find localStorage from updateArticleLS");
+
+    const Ndata = localStorage.length;
+    if (window) {
+      for (let i = 0; i < Ndata; i++) {
+        let key = localStorage.key(i);
+        if(key == 'article_'+item.id){
+          localStorage.setItem('article_'+item.id,JSON.stringify(item));
+          console.log('article_'+item.id);
+        }
+      }
+    } else {
+      console.log("cannot find window from updateArticleLS");
+    }
   };
 
   static addArticleLS = (item: Article): void => {
@@ -44,7 +58,7 @@ class LocalStorage {
     const Ndata = localStorage.length;
     const articles: Article[] = [];
     let article_json: string;
-    if (typeof window !== "undefined") {
+    if (window) {
       for (let i = 0; i < Ndata; i++) {
         let key = localStorage.key(i);
         if(!key!.startsWith('article_')) continue;
