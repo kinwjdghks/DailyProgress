@@ -3,7 +3,7 @@ import Button from "./Button";
 
 const BackDrop = () => {
   return (
-    <div className="w-full h-full bg-black opacity-50 fixed z-[100] [invisible]"></div>
+    <div className="w-full h-full bg-black opacity-50 fixed [invisible]"></div>
   );
 };
 
@@ -47,7 +47,7 @@ const NewArticleModal = ({
   return (
     <div>
       <BackDrop />
-      <div className="w-1/2 h-1/2 rounded-3xl bg-white absolute p-16 flex flex-col justify-between left-[50%] translate-x-[-50%] top-[50%] translate-y-[-50%] z-[101]">
+      <div className="w-1/2 h-1/2 rounded-3xl bg-white absolute p-16 flex flex-col justify-between left-[50%] translate-x-[-50%] top-[50%] translate-y-[-50%]">
         <form className="">
           <div className="">
             <label className="text-3xl">Name of Article: </label>
@@ -65,8 +65,8 @@ const NewArticleModal = ({
           </div>
         </form>
         <div className="flex gap-12 justify-center">
-          <Button onClick={addArticleHandler}>Add</Button>
-          <Button onClick={onToggleModal}>Cancel</Button>
+          <Button onClick={addArticleHandler} size="S">Add</Button>
+          <Button onClick={onToggleModal} size="S">Cancel</Button>
         </div>
       </div>
     </div>

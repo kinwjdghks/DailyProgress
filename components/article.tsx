@@ -23,7 +23,7 @@ const Article = ({ item }: { item: TYPE_Article }) => {
       query: { articleId: item.id },
     });
   };
-
+  
   return (
     <ArticleFrame
       onClick={moveToDetailedPage}
@@ -45,7 +45,7 @@ const Article = ({ item }: { item: TYPE_Article }) => {
         X
         {deleteCheck && (
           <div
-            className="w-24 h-10 bg-white text-black text-center rounded-lg absolute right-2 border-solid border-2 border-black z-10"
+            className="w-24 h-10 bg-white text-black text-center rounded-lg absolute right-2 border-solid border-2 border-black"
             onClick={(e) => {
               console.log('delete');
               e.stopPropagation();
@@ -60,9 +60,10 @@ const Article = ({ item }: { item: TYPE_Article }) => {
         onMouseEnter={() => setOnhover(true)}
       ></div>
 
-      <h1 className="text-center text-2xl mt-[10%]">
-        {elapsedHr} Hour {elapsedMin} Min
-      </h1>
+      
+      <h2 className="text-center text-2xl mt-[10%]">
+        {elapsedHr} H {elapsedMin} M
+      </h2>
       <h2 className="m-5 text-right text-3xl text-white">{item.id}</h2>
     </ArticleFrame>
   );

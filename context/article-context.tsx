@@ -1,4 +1,4 @@
-import LocalStorage from "@/functions/localstorage";
+import LocalStorage from "@/libs/localstorage";
 import { COLOR } from "@/public/assets/colors";
 import { createContext, useState, useContext, useEffect, useRef } from "react";
 

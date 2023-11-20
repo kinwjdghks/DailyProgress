@@ -54,10 +54,10 @@ const StopWatch = ({ onSave, onAutoSave }: stopwatchprops) => {
     <div className="w-full">
       <NumberPanel time={time}/>
       <div>
-        <Button size="M" onClick={startTimer} active={`${!isRunning ? 'inactive':'active'}`}>
+        <Button size="M" onClick={startTimer} >
           Start
         </Button>
-        <Button size="M" onClick={stopTimer} active={`${isRunning ? 'inactive':'active'}`}>
+        <Button size="M" onClick={stopTimer} >
           Stop
         </Button>
       </div>

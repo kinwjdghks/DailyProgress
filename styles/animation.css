@@ -1,0 +1,36 @@
+/* #ct_toggle_wrapper{
+    width:12rem;
+    height:4rem;
+    position: relative;
+    border: solid 2px black;
+    margin-bottom: 2rem;
+    box-sizing: content-box;
+    border-radius: 1rem;
+    overflow: hidden;
+    cursor: pointer;
+}
+#ct_toggle_wrapper::after{
+    content: 'Login';
+    font-size: 2rem;
+    margin: 50%;
+   
+}
+#ct_toggle_btn{
+   height: 14rem;
+   width: 14rem;
+   position: absolute;
+   top: -1rem;
+   left: -1rem;
+   opacity: 0;
+    
+}
+
+.ct_loginbox{
+    background-color: white;
+    border-radius: 2rem;
+    height: 22rem;
+}
+
+#ct_toggle_btn::-ms-check + .ct_loginbox{
+    transform: translate(0,50%);
+} */

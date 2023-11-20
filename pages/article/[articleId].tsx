@@ -1,10 +1,10 @@
 import { Article, articleContext } from "@/context/article-context";
 import { useRouter } from "next/router";
 import { useState, useContext, useEffect } from "react";
-import StopWatch from "@/components/stopwatch";
 import { toHourMin } from "@/components/ui/numberpanel";
-import Button from "@/components/ui/Button";
 import { Poppins } from "next/font/google";
+import StopWatch from "@/components/stopwatch";
+import Button from "@/components/ui/Button";
 const poppins = Poppins({ weight: "500", subsets: ["latin"] });
 
 const ArticlePage = () => {
@@ -42,8 +42,8 @@ const ArticlePage = () => {
   if (!article) return <p>No Page found!</p>;
   else
     return (
-      <div className={`w-screen h-screen bg-blue-200 ${poppins.className}`}>
-        <p className="text-center text-6xl">
+      <div className={`w-screen h-screen bg-blue-200 ${poppins.className} overflow-auto`}>
+        <p className="text-center m-9 mt-32 text-6xl">
           Total: {(toHourMin(visualTime!).hour + "").padStart(2, "0")}:
           {(toHourMin(visualTime!).min + "").padStart(2, "0")}
         </p>
